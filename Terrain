@@ -1,0 +1,21 @@
+Map.addLayer(x);
+
+
+Map.addLayer(x, {min: 0, max :300, palette: ['blue', 'green', 'yellow']}, 'DEM');
+
+var hillshade = ee.Terrain.hillshade(x);
+Map.addLayer(hillshade, {min:0, max:255 }, 'hillshade')
+
+
+
+var slope = ee.Terrain.slope(x);
+Map.addLayer(hillshade, {min:0, max:255 }, 'slope')
+
+
+
+
+
+
+
+
+

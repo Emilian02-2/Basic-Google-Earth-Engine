@@ -1,0 +1,65 @@
+var roi = ee.Geometry.Point(26.2434, 47.6082); # REGION OF INTEREST
+var sentCol = ee.ImageCollection('COPERNICUS/S2')
+                .filterBounds(roi)
+                .filterDate('2018-04-01', '2018-05-01')
+                .sort('CLOUDY_PIXEL_PERCENTAGE')
+                .first();
+Map.centerObject(sentCol, 8);
+
+
+
+
+Map.addLayer(sent2,{bands:['B4','B3','B2']}, "Black");
+Map.addLayer(sent2,{bands:['B4','B3','B2'], min:0, max:3000}, "True-colour");
+Map.addLayer(sentCol, {bands:['B8','B4','B3'], min: 0, max: 3000}, 'False-colour');
+
+
+
+
+ee.ImageCollection('COPERNICUS/S2')
+Încarcă întreaga colecție Sentinel-2 Level-1C din arhiva Earth Engine.
+
+.filterBounds(roi)
+Păstrează doar imaginile care acoperă punctul roi. Astfel ne asigurăm că selectăm numai scene care conțin efectiv locația de interes.
+
+.filterDate('2018-04-01', '2018-05-01')
+Filtrează imaginile după perioada specificată: aici, din 1 aprilie până în 1 mai 2018 (data de început inclusă, data de sfârșit exclusă).
+
+.sort('CLOUDY_PIXEL_PERCENTAGE')
+Sortează colecția crescător după procentul de nori (CLOUDY_PIXEL_PERCENTAGE) din metadatele Scenei. Astfel, imaginile cu cei mai puțini nori vor fi primele în listă.
+
+.first()
+Selectează prima imagine din colecție (cea cu cel mai mic procent de nori, după sortare). sentCol va fi acum un singur obiect ee.Image, nu o colecție.
+
+
+
+
+
+  var image = ee.Image(Sent2
+ .filterDate("2015-07-01", "2017-09-30")
+ .filterBounds(CAR)
+ .sort("CLOUD_COVERAGE_ASSESSMENT")
+ .first());
+ print("sent2", image);
+ 
+ 
+ var trueColour = {
+   bands: ["B4","B3", "B2"],
+   min: 0,
+   max: 3000
+ };
+ 
+ Map.addLayer(image, trueColour)
+
+
+
+ 
+ 
+ var NDVI = image.expression(
+  "(NIR - RED) / (NIR + RED)",
+  {
+    RED: image.select("B4"),
+    NIR: image.select("B8"),
+    BLUE: image.select("B2")
+  });
+  Map.addLayer(NDVI, {min:0, max:1}, "NDVI")
